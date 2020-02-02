@@ -1,4 +1,5 @@
 from django.db import models
+import json
 
 # Create your models here.
 
@@ -13,7 +14,13 @@ class User(models.Model):
     """
     email = models.EmailField()
     password = models.CharField(max_length=100)
-    goals = []
+    goals = models.TextField()
+
+    def get_goals(self):
+        return json.loads(self.goals)
+
+    def set_goals(self, goal_update):
+        self.goals = json.dumps(goal_update)
 
 
 class Goal(models.Model):
@@ -31,7 +38,15 @@ class Goal(models.Model):
     tasks_completed = models.IntegerField()
     description = models.TextField()
     flat_goal = models.CharField(max_length=200)
-    schedule = []
+    # This is actually a list of Task objects, but is stored as a JSON string inside 
+    # the schedule field
+    schedule = models.TextField()
+
+    def get_shedule(self):
+        return json.loads(self.schedule)
+
+    def set_schedule(self, task_update):
+        self.schedule = json.dumps(task_update)
 
 
 class Task(models.Model):
@@ -45,7 +60,7 @@ class Task(models.Model):
     @notes - Notes pertaining to the task.
     """
     time = models.DateField()
-    completed = models.BooleanField()
+    completed = models.BooleanField(default=False)
     name = models.CharField(max_length=200)
     related_goal = models.CharField(max_length=200)
     notes = models.TextField()

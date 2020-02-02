@@ -1,0 +1,11 @@
+<!-- For a limited time only YOU TOO can log into the Goal Setter application
+directly from the Backend, because I am super lazeboi atm and am not working on
+the React app rn.
+
+Sam 2020.2.2 -->
+<h2>Log in to Goal Setter Backend!</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Log In Homie</button>
+</form>

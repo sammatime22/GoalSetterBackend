@@ -1,0 +1,7 @@
+{% if user.is_authenticated %}
+    {{ user.username }} is now logged into GoalSetter App.
+    <p><a href="{% url 'logout' %}">Log Out of GoalSetter</a></p>
+{% else %}
+    <p>Incorrect Credentials; Please try again.</p>
+    <a href="{% url 'login' %}">Back to Login</a>
+{% endif %}
