@@ -17,10 +17,22 @@ class User(models.Model):
     goals = models.TextField()
 
     def get_goals(self):
-        return json.loads(self.goals)
+        try:
+            return json.loads(self.goals)
+        # When the goals were set in a non-JSON way, there was probably a 
+        # incorrectly formatted request. For now, our solution is to set the
+        # goals field back to {"Goals": "None"}.
+        except ValueError:
+            self.set_goals({"Goals":"None"})
+            return json.loads(self.goals)
 
     def set_goals(self, goal_update):
-        self.goals = json.dumps(goal_update)
+        # Similarly, we will set the goals to {"Goals": "None"} if the value 
+        # provided wasn't JSON.
+        try:
+            self.goals = json.dumps(goal_update)
+        except ValueError:
+            self.goals = json.dumps({"Goals": "None"})
 
 
 class Goal(models.Model):
@@ -38,8 +50,8 @@ class Goal(models.Model):
     tasks_completed = models.IntegerField()
     description = models.TextField()
     flat_goal = models.CharField(max_length=200)
-    # This is actually a list of Task objects, but is stored as a JSON string inside 
-    # the schedule field
+    # This is actually a list of Task objects, but is stored as a JSON string 
+    # inside the schedule field
     schedule = models.TextField()
 
     def get_shedule(self):

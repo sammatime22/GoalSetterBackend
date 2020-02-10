@@ -4,6 +4,7 @@ import json
 
 # Create your tests here.
 class UserTestCase(TestCase):
+    # A Mock Goals JSON Object
     GOALS = {
         "Goals": {
             "Goal": {
@@ -16,9 +17,22 @@ class UserTestCase(TestCase):
         }
     }
 
-    def setUp(self):
-        User.objects.create(email="user@email.com", password="12345", goals=json.dumps(self.GOALS))
+    user = None
 
-    def test_user_goal_is_to_run_a_marathon(self):
-        user = User.objects.get(email="user@email.com")
-        self.assertEqual(self.GOALS, user.get_goals())
+    def setUp(self):
+        User.objects.create(email="user@email.com", password="12345", goals=\
+            json.dumps(self.GOALS))
+        self.user = User.objects.get(email="user@email.com")
+
+    def test_00_user_password_checks_out(self):
+        self.assertEqual("12345", self.user.password)
+
+    def test_01_user_goal_is_to_run_a_marathon(self):
+        self.assertEqual(self.GOALS, self.user.get_goals())
+
+    def test_02_user_goal_not_written_in_json_becomes_nothing(self):
+        User.objects.create(email="baduser@bad.com", password="54321", goals=\
+            "Eat a cherry pie.")
+        bad_user = User.objects.get(email="baduser@bad.com")
+        self.assertEqual({"Goals": "None"}, bad_user.get_goals())
+
