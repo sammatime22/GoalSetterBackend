@@ -48,5 +48,4 @@ class Task(models.Model):
     time = models.DateTimeField()
     completed = models.BooleanField(default=False)
     name = models.CharField(max_length=200)
-    related_goal = models.CharField(max_length=200)
     notes = models.TextField()
