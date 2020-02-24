@@ -1,3 +1,6 @@
+from django.urls import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase
 from django.test import TestCase
 from comptroller.models import User, Goal, Task
 import json
@@ -47,3 +50,26 @@ class UserTestCase(TestCase):
             notes="We should be able to understand \'ni sai shite\'.")
         self.assertFalse(Task.objects.get(goal=Goal.objects.get(name=\
             "Pass JLPT N2")).completed)
+
+
+class ComptrollerAPITests(APITestCase):
+    
+    def setUp(self):
+        """
+        Setting up the user object which will be used in the remainder of the 
+        tests.
+        """
+        User.objects.create(email="user@email.com", password="12345")
+        Goal.objects.create(user=User.objects.get(email="user@email.com"),\
+            name="Pass JLPT N2", tasks_completed=2, description="The N2 exam \
+            gives me a goal to get over my current study slump.", flat_goal=\
+            "Get a perfect score on the exam.")
+
+    def test_00_api_get_generic_user_goals_succeeds(self):
+        """
+        This test checks that another application, if providing authentication,
+        can gather the goals of a generic user.
+        """
+        url = reverse('get-goals')
+        data = {'email': 'user@email.com', 'password': '12345'}
+        response = self.client.get(url, data, format='json')
