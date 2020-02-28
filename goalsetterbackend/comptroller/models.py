@@ -12,7 +12,14 @@ class User(models.Model):
     """
     email = models.EmailField()
     password = models.CharField(max_length=100)
+    
+    def __str__(self):
+        """
+        This method simply returns the eamil back as a string.
 
+        @return String The email as a string.
+        """
+        return self.email
 
 class Goal(models.Model):
     """
@@ -32,6 +39,26 @@ class Goal(models.Model):
     description = models.TextField()
     flat_goal = models.CharField(max_length=200)
 
+    def __str__(self):
+        """
+        This method simply returns the name back as a string.
+
+        @return String The name as a string.
+        """
+        return self.name
+
+    def get_info(self):
+        """
+        This method returns back a JSON object equivalent of the Goal data.
+
+        @return JSON Object A JSON object equivalent of the Goal data.
+        """
+        return {
+            "Name": self.name,
+            "Tasks Completed": self.tasks_completed,
+            "Description": self.description,
+            "Flat Goal": self.flat_goal
+        }
 
 class Task(models.Model):
     """
@@ -49,3 +76,24 @@ class Task(models.Model):
     completed = models.BooleanField(default=False)
     name = models.CharField(max_length=200)
     notes = models.TextField()
+
+    def __str__(self):
+        """
+        This method simply returns the name back as a string.
+
+        @return String The name as a string.
+        """
+        return self.name
+
+    def get_info(self):
+        """
+        This method returns back a JSON object equivalent of the Task data.
+
+        @return JSON Object A JSON object equivalent of the Task data.
+        """
+        return {
+            "Name": self.name,
+            "Time": self.time,
+            "Completed": self.completed,
+            "Notes": self.notes
+        }

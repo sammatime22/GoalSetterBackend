@@ -15,16 +15,26 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import url
 from django.views.generic.base import TemplateView
 from rest_framework import routers
 from comptroller import views
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserView, 'user')
+router.register(r'goals', views.GoalView, 'goal')
+router.register(r'tasks', views.TaskView, 'task')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('authenticate/', include('django.contrib.auth.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('api/', include(router.urls))
+    path('api/', include(router.urls)),
+    
+    # REST API
+    url(
+        r'get-user-info/',
+        views.get_user_info,
+        name='get_user_info'
+    )
 ]

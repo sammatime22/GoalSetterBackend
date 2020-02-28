@@ -1,4 +1,5 @@
 from django.urls import reverse
+from django.test import Client
 from rest_framework import status
 from rest_framework.test import APITestCase
 from django.test import TestCase
@@ -9,6 +10,8 @@ import json
 class UserTestCase(TestCase):
 
     user = None
+
+    client = Client()
 
     def setUp(self):
         """
@@ -65,11 +68,12 @@ class ComptrollerAPITests(APITestCase):
             gives me a goal to get over my current study slump.", flat_goal=\
             "Get a perfect score on the exam.")
 
-    def test_00_api_get_generic_user_goals_succeeds(self):
+    def test_04_api_get_generic_user_goals_succeeds(self):
         """
         This test checks that another application, if providing authentication,
         can gather the goals of a generic user.
         """
-        url = reverse('get-goals')
-        data = {'email': 'user@email.com', 'password': '12345'}
-        response = self.client.get(url, data, format='json')
+        response = self.client.get(reverse('users'), 
+            content_type='application/json'
+        )
+        print(response)
