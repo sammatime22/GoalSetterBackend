@@ -35,16 +35,9 @@ def get_user_info(request):
     """
     This method will return all of a user's goals and tasks.
     """
-    email = "fail"
-    print(request.body)
-    print(email)
-
     data = json.loads(request.body.decode("utf-8"))
-
     email = data["email"]
     password = data["password"]
-    
-    print(data)
     try:
         user = User.objects.get(email=email)
 
@@ -54,11 +47,13 @@ def get_user_info(request):
         # Return goal and task data to requests with appropriate credentials
         else:
             response = {}
-            goals = Goal.objects.get(user)
+            goals = Goal.objects.filter(user=user)
+            response["Goals"] = {}
             # Develop the JSON response
             for goal in goals:
                 goal_object_to_add = {}
-                tasks = Task.objects.get(goal)
+                tasks = Task.objects.filter(goal=goal)
+                goal_object_to_add["Tasks"] = {}
                 # Retrieve and add all Tasks for a specific Goal
                 for task in tasks:
                     goal_object_to_add["Tasks"][str(task)] = task.get_info()
