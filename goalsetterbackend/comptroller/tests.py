@@ -67,13 +67,21 @@ class ComptrollerAPITests(APITestCase):
             name="Pass JLPT N2", tasks_completed=2, description="The N2 exam \
             gives me a goal to get over my current study slump.", flat_goal=\
             "Get a perfect score on the exam.")
+        Task.objects.create(goal=Goal.objects.get(user=User.objects.get(email=\
+            "user@email.com")), time='2020-03-01 10:00:00', completed=False,\
+            name="Vocabulary Study", notes="We should finish vocab.")
 
     def test_04_api_get_generic_user_goals_succeeds(self):
         """
         This test checks that another application, if providing authentication,
         can gather the goals of a generic user.
         """
-        response = self.client.get(reverse('users'), 
-            content_type='application/json'
-        )
-        print(response)
+        response = self.client.get('http://localhost:8000/api/get-user-info/', 
+            {'email':'user@email.com', 'password':'12345'})
+        print(response.content)
+
+    # Test incorrect password fails
+
+    # Test malformed request fails
+
+    # Test no content fails
