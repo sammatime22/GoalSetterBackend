@@ -1,0 +1,58 @@
+1) Get the api to work manually CHECK
+2) Write tests to check urls work right
+3) Write tests for appropriate lookup
+4) Get the relation mappings correct U->G (1..n), G->T (1..n)
+
+
+
+
+
+General Architecture
+End User -(curl, etc)-> Django -(Object Relational Mapping)-> SQLite
+
+End users need to be able to get all the goals, tasks assigned to them.
+{ "Goal": "Goal Info"
+   ....
+  "Tasks": [
+        ....
+  ]
+  ....
+}
+
+Maybe Django does this better..?
+Current setupuser:
+user = get_user(user_given) m
+goals = get_goals(user) n ^ o
+for goal in goals:
+   tasks.add(get_tasks(goal)) p ^ q 
+n^5
+
+user = get_user(user_given) n
+goals = user.goals() 1
+for goal in goals: o
+    tasks = goal.tasks
+n^2
+
+I'm also thinking that if the User model has a direct referenct to the Goal that
+it has ownership of, that it's specific lookup will be just an address lookup,
+which shouldn't take too much time.
+
+
+
+{"Boxing" : {
+    "Title": "Boxing"
+    "Tasks": {
+        
+    
+}
+End users need to be able to post (create) new goals, tasks.
+End users need to be able to get tasks based on fuzzy queries.
+End users need to be able to update goals, tasks.
+
+
+
+There appears to be two different use cases:
+    Flask-esque uri - This is closer to having rest services
+    Page-builder uri - This is probably more web-formy
+
+

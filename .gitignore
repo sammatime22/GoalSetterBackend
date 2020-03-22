@@ -4,3 +4,4 @@ Pipfile.lock
 goalsetterbackend/comptroller/migrations/*
 goalsetterbackend/db.sqlite3
 goalsetterbackend/db.sqlite3
+ProjectNotes.txt
