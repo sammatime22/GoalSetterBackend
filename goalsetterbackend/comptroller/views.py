@@ -50,35 +50,14 @@ def parse_request(request):
         return ""
 
 
-"""
-accepted_media_type
-accepted_renderer
-auth
-authenticators
-content_type
-data
-force_plaintext_errors
-negotiator
-parser_context
-parsers
-query_params
-stream
-successful_authenticator
-user
-version
-versioning_scheme
-
-Make sure to provide parsing if the 
-requestion puts their parameters in:
-- data
-- query_params
-
-for now.
-"""
 @api_view(['GET'])
 def get_user_info(request):
     """
     This method will return all of a user's goals and tasks.
+
+    @param request - The request from the outside application.
+
+    @return The user info in JSON format.
     """
 
     try:

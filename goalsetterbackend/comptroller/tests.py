@@ -112,6 +112,10 @@ class ComptrollerAPITests(APITestCase):
 
     # Test non-existant user
     def test_07_api_get_info_for_nonexistant_user_fails(self):
+        """
+        This test checks that another application, if requesting data for
+        a nonexistant user, fails.
+        """
         response = self.client.get('http://localhost:8000/api/get-user-info/', 
             data={'email':'user2@email.com', 'password':'WhatDa'})
         json_response = json.loads(response.content.decode("utf-8"))
