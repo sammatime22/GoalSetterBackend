@@ -30,6 +30,51 @@ class TaskView(viewsets.ModelViewSet):
     queryset = Task.objects.all()
 
 
+def parse_request(request):
+    """
+    A simple helper method (that WILL be (re)moved) that can
+    parse and return the data embedded within a request, whether
+    said data comes in on the body, data, or query_params attribute.
+
+    @param request - The request data.
+
+    @return The data within said request.
+    """
+    if b'' != request.body:
+        return json.loads(request.body.decode('utf-8'))
+    elif {} != request.data:
+        return json.loads(request.body.decode('utf-8'))
+    elif b'' != request.query_params:
+        return json.loads(json.dumps(request.query_params))
+    else:
+        return ""
+
+
+"""
+accepted_media_type
+accepted_renderer
+auth
+authenticators
+content_type
+data
+force_plaintext_errors
+negotiator
+parser_context
+parsers
+query_params
+stream
+successful_authenticator
+user
+version
+versioning_scheme
+
+Make sure to provide parsing if the 
+requestion puts their parameters in:
+- data
+- query_params
+
+for now.
+"""
 @api_view(['GET'])
 def get_user_info(request):
     """
@@ -38,7 +83,7 @@ def get_user_info(request):
 
     try:
         # Attempt to grab any data that may exist if it exists
-        data = json.loads(request.body.decode("utf-8"))
+        data = parse_request(request)
         email = data["email"]
         password = data["password"]
         try:
@@ -68,7 +113,10 @@ def get_user_info(request):
                 return JsonResponse(response)
         # If the user does not exist, return 404
         except User.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({
+                "Error": "User not found.",
+                "Status Code": "404"
+            })
     except:
         return JsonResponse({
             "Error": "A part of your request was either malformed or " +
