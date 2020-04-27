@@ -3,4 +3,4 @@ python:
   - "3.5.2"
 
 script:
-  - python manage.py test
+  - python goalsetterbackend/manage.py test goalsetterbackend/
