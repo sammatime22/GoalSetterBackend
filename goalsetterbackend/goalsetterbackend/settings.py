@@ -11,16 +11,27 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-from .secretkey import SECRET_KEY_VALUE
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+print(BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY_VALUE = "NotSoSecret"
+KEY = "SECRET_KEY_VALUE"
+try:
+    if os.path.isfile(BASE_DIR + "/goalsetterbackend/secretkey.json"):
+        with open(BASE_DIR + "/goalsetterbackend/secretkey.json") as keyfile:
+            key = json.load(keyfile)
+            SECRET_KEY_VALUE = key[KEY]
+    else:
+        print("No keyfile exists. Using insecure key.")
+except OSError:
+    print("Error when attempting to open the keyfile. Using insecure key.")
 SECRET_KEY = SECRET_KEY_VALUE
 
 # SECURITY WARNING: don't run with debug turned on in production!
