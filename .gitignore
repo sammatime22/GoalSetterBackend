@@ -1,4 +1,4 @@
-goalsetterbackend/goalsetterbackend/secretkey.py
+goalsetterbackend/goalsetterbackend/secretkey.json
 Pipfile
 Pipfile.lock
 goalsetterbackend/comptroller/migrations/*

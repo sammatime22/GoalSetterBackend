@@ -1,0 +1,8 @@
+language: python
+python:
+  - "3.5.2"
+
+script:
+  - python goalsetterbackend/manage.py makemigrations
+  - python goalsetterbackend/manage.py migrate
+  - python goalsetterbackend/manage.py test goalsetterbackend/
